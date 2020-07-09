@@ -1,14 +1,57 @@
+<html lang="en">
+  <head>
+  
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head> 
+<body>
 
-<h1>Detail page</h1>
-
-<h3>제목:{{blog.title}}</h3>
+<h1 class="bg-primary d-inline"> Detail page</h1>
+<br>
+<h3 class="bg-warning d-inline">제목:{{blog.title}}</h3>
 
 <hr>
 
-<p>{{blog.pub_date}}</p>
+<p class="alert alert-primary d-inline btn-sm">{{likes}}좋아요</p>
+
+<p><br>{{blog.pub_date}}</p>
 
 <p>{{blog.body}}</p>
 
 <a href="{%url 'edit' blog.id %}">수정하기</a>
 <a href="{%url 'delete' blog.id %}">삭제하기</a>
 <a href="{%url 'list'%}">list</a>
+
+<table class="table table-striped" >
+
+<tbody>
+  <tr>
+  <td>Comments</td>
+  </tr>
+  <tr>
+  <td>
+  {% for comment in comments %}
+  작성자: {{comment.author}}
+  내용: {{comment.body}}
+  {{comment.pub_date}}
+  </td>
+  <hr>
+</tr>
+</tbody>
+</table>
+
+{% endfor %}
+
+<form action="/blog/commenting/{{blog.id}}" method="POST">
+    {% csrf_token %}
+    <input type="text" name='body'>
+    <button type="submit">작성</button>
+    <span>
+      <form action="/blog/like/{{blog.id}}" method="get">
+          <button type="submit" >좋아요</button>
+      </form>
+      </span>
+</form>
+
+
+
+</body> </html>
